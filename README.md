@@ -1,56 +1,31 @@
-# Vision Robotic CTF
+# RoboMaster EP Core Capture the Flag
 
-A real-time robotic Capture the Flag pursuit-evasion game using vision-based autonomous agents on the RoboMaster platform.
+A LUMS robotics project that paired a keyboard-controlled DJI RoboMaster attacker with an autonomous defender in an indoor capture-the-flag demo. The defender used a Jetson Nano, an Intel RealSense RGB-D camera, OpenCV, and the RoboMaster SDK.
 
-## Overview
+## Physical demo
 
-This project simulates and implements a robotic Capture the Flag game with two mobile agents: an attacker and a defender. The attacker must retrieve a centrally located flag and deliver it to a drop zone, while the defender tracks and intercepts the attacker using vision-based detection.
+The defender used HSV color segmentation to detect a red marker on the attacker. Aligned depth measurements and the marker's image position provided range and bearing for estimating the attacker's grid cell. The defender replanned its next move with A* and searched for the marker when it went out of view. The [project report](JDS_Final_Report%20%281%29.pdf) documents the indoor trial and discusses camera field-of-view limits and false positives from background colors.
 
-The system combines grid-based path planning, real-time visual tracking, and multi-threaded robot control to model autonomous decision-making in an adversarial robotics environment.
+## Run the simulation
 
-## Features
+The `10 × 10` Python simulation has a fixed obstacle and a randomly moving patrol. Choose one role at the prompt and enter directions in the terminal. The computer controls the other role with A* and Matplotlib displays the arena.
 
-- RoboMaster-based robotic Capture the Flag setup
-- 3x3 grid arena simulation
-- Attacker and defender agent behavior
-- HSV-based color segmentation for visual tracking
-- A* path planning for navigation
-- Dynamic rerouting during pursuit-evasion
-- Multi-threaded control architecture
-- Python simulation with randomized obstacle placement
+```bash
+python -m pip install numpy matplotlib
+python robo_simulation.py
+```
 
-## Files
+## Repository contents
 
-- `attacker.py` - Attacker robot logic
-- `defender.py` - Defender robot logic
-- `defender 2.py` - Alternate defender implementation
-- `robo_simulation.py` - Python simulation environment
-- `JDS_Final_Report (1).pdf` - Final project report
+| File | Contents |
+| --- | --- |
+| [`robo_simulation.py`](robo_simulation.py) | Interactive grid simulation for one human player and one computer-controlled agent |
+| [`attacker.py`](attacker.py) | Keyboard teleoperation prototype using the RoboMaster SDK |
+| [`defender.py`](defender.py) | RealSense marker-detection and range/bearing prototype |
+| [`defender 2.py`](defender%202.py) | Integrated defender prototype with RGB-D tracking, A* planning, and chassis control |
 
-## Project Title
-
-**Capture the Flag: A Real-Time Robotic Pursuit-Evasion Game Using Vision-Based Autonomous Agents**
+The hardware scripts are archived lab prototypes. Running them on a fresh checkout requires cleaning up formatting and entry points and adapting the settings to the robot, camera, and arena.
 
 ## Authors
 
-Arooba Farhan, Shariq Kazmi, and Mahnoor Kashif  
-Lahore University of Management Sciences, Lahore, Pakistan
-
-## Technologies Used
-
-- Python
-- RoboMaster SDK
-- OpenCV
-- HSV color segmentation
-- A* path planning
-- Multi-threading
-
-## Description
-
-The attacker navigates toward the flag and then to the drop zone while avoiding the defender. The defender uses camera-based perception to detect and track the attacker in real time. Both agents use autonomous behavior pipelines that combine perception, planning, and motion control.
-
-The simulation models strategic interactions between agents, while the hardware implementation translates the same ideas to physical RoboMaster robots in a controlled arena.
-
-## License
-
-This project was developed for academic purposes.
+Arooba Farhan, Shariq Kazmi, and Mahnoor Kashif, Lahore University of Management Sciences.
